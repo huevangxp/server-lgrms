@@ -39,17 +39,16 @@ exports.selectById = async (req, res) => {
   const { id } = req.params;
   try {
     const sql = `
-      SELECT pd.id AS id, rarul_department_id , st.sector_title, st.created_at
+      SELECT pd.id AS rarul_department_id, st.id as id, st.sector_title, st.created_at
       FROM province_departments pd
       INNER JOIN sectors st ON pd.id = st.rarul_department_id
       WHERE pd.id = '${id}'
     `;
     const data = await sequelize.query(sql, { type: sequelize.QueryTypes.SELECT });
-    if (data.length > 0) {
-      return res.status(200).json(data);
-    } else {
-      return res.status(404).json({ message: "Data not found" });
+    if (!data) {
+      return res.status(404).json({ message: "ບໍ່ມີຂໍ້ມູນ" });
     }
+    return res.status(200).json(data);
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message:error.message});

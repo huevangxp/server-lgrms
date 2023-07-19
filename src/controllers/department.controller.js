@@ -1,4 +1,6 @@
 const Department = require("../models/department.model");
+const sequelize = require("../configs/db");
+const { QueryTypes } = require("sequelize");
 
 exports.create = async (req, res) => {
   const user = req.payload.id;
@@ -34,17 +36,21 @@ exports.selectById = async (req, res) => {
   try {
     const { id } = req.params;
 
-    // Find a department by its ID using the Department model
-    const department = await Department.findByPk(id);
+    const sql = `
+      select dt.id as id, dto.id as department_organization_id, dto.department_organization_title, dt.department_title, dt.created_at from department_organizations as dto
+       inner join departments as dt on dto.id = dt.department_organization_id where dto.id = '${id}'
+    `
+
+    const department = await sequelize.query(sql, { type: QueryTypes.SELECT });
 
     if (!department) {
       return res.status(404).json({ error: "Department not found" });
     }
 
-    res.json(department);
+   return res.status(200).json(department);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Failed to retrieve the department" });
+    res.status(500).json({message: error.message});
   }
 };
 

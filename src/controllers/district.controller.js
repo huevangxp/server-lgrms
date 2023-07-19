@@ -38,11 +38,10 @@ exports.get_all_by_id = async (req, res) => {
          where pd.id = '${id}'
         `;
     const data = await sequelize.query(sql, { type: QueryTypes.SELECT });
-    if (data.length > 0) {
-      return res.status(200).json(data);
-    } else {
-      return res.status(404).json({ message: "NOT FOUND DATA" });
+    if (!data) {
+      return res.status(404).json({ message: "ບໍ່ມີຂໍ້ມູນ" });
     }
+    return res.status(200).json(data);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
