@@ -52,7 +52,7 @@ exports.selectAllById = async (req, res) => {
   const { id } = req.params;
   try {
     const data = await DepartmentOrganization.findAndCountAll({
-      where: { id },
+      where: { ministry_id : id },
     });
     res.status(200).json(data);
   } catch (error) {
@@ -87,8 +87,8 @@ exports.update = async (req, res) => {
     if (!data) {
       return res.status(404).json({ message: "this id not found" });
     }
-    let department = await req.body;
-    await delete department.user_id;
+    // let department = await req.body;
+    // await delete department.user_id;
     await data.update({
       department_organization_title: req.body.department_organization_title,
     });

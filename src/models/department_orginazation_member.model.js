@@ -9,7 +9,7 @@ const department_organization_member = sequelize.define(
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
     },
-    department_organization_member_id:{
+    department_organization_id:{
         type:DataTypes.UUID,
         allowNull:false
     },

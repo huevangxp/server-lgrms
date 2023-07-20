@@ -7,5 +7,4 @@ module.exports = (app) => {
     app.delete('/department-member/:id', controller.delete);
     app.put('/department-member/:id', controller.update);
     app.get('/departmentMember_department/:id', controller.departmentMember_department);
-
 }

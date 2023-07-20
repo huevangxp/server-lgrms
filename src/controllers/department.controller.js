@@ -76,7 +76,7 @@ exports.update = async (req, res) => {
     res.json({ message: "Department updated successfully" });
   } catch (error) {
     // console.error(error);
-    res.status(500).json({ error: "Failed to update the department" });
+    res.status(500).json({ message:error.message });
   }
 };
 

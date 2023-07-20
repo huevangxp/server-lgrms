@@ -5,7 +5,7 @@ exports.create = async (req, res) => {
   const user = req.payload.id;
   try {
     const {
-      department_organization_member_id,
+      department_organization_id,
       name,
       last_name,
       profile,
@@ -16,7 +16,7 @@ exports.create = async (req, res) => {
     } = req.body;
 
     await Department_Organization_Member.create({
-      department_organization_member_id,
+      department_organization_id,
       name,
       last_name,
       profile,
@@ -38,23 +38,28 @@ exports.create = async (req, res) => {
   }
 };
 // join department and deparment-menber
-exports.department_Organization_Member_department = async (req, res) => {
+exports.department_Organization_Member = async (req, res) => {
   try {
     const { id } = req.params;
-    const sql = `
-     select dot.id,dotm.id as d_o_m_id,dotm.name,dotm.last_name ,
-     dotm.profile,dotm.phone,dotm.position,dotm.address,dotm.details
-     from department_organizations dot
-     inner join department_organization_members dotm 
-     on dot.id = dotm.department_organization_member_id 
-     where dot.id = '${id}'
-    `;
-    const data = await sequelize.query(sql, { type: QueryTypes.SELECT });
-    if (data.length > 0) {
-      return res.status(200).json(data);
-    } else {
-      return res.status(404).json({ message: "NOT FOUND DATA" });
+    const data = await Department_Organization_Member.findAndCountAll({ where: { department_organization_id: id } });
+    if (!data) {
+      return res.status(404).json({message:'this table do not exist'})
     }
+    return res.status(200).json(data);
+    // const sql = `
+    //  select dot.id,dotm.id as d_o_m_id,dotm.name,dotm.last_name ,
+    //  dotm.profile,dotm.phone,dotm.position,dotm.address,dotm.details
+    //  from department_organizations dot
+    //  inner join department_organization_members dotm 
+    //  on dot.id = dotm.department_organization_member_id 
+    //  where dot.id = '${id}'
+    // `;
+    // const data = await sequelize.query(sql, { type: QueryTypes.SELECT });
+    // if (data.length > 0) {
+    //   return res.status(200).json(data);
+    // } else {
+    //   return res.status(404).json({ message: "NOT FOUND DATA" });
+    // }
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
