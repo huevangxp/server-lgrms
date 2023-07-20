@@ -85,8 +85,11 @@ exports.selectById = async (req, res) => {
 exports.updateData = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, last_name, profile, phone, position, address, details } =
-      req.body;
+    const { name, last_name, profile, phone, position, address, details } = req.body;
+    const data = await Department_Organization_Member.findByPk(id);
+    if (!data) {
+      return res.status(404).json({message: 'Invalid department'})
+    }
     const prepareData = {
       name: name,
       last_name: last_name,
@@ -96,18 +99,11 @@ exports.updateData = async (req, res) => {
       address: address,
       details: details,
     };
-    await Department_Organization_Member.update(prepareData, { where: { id: id } }).then(
-      (updated) => {
-        if (updated) {
-          return res.status(200).json({ message: "Updated" });
-        } else {
-          return res.status(404).json({ message: "can not update" });
-        }
-      }
-    );
+    await data.update(prepareData);
+    return res.status(200).json({message: 'update success'})
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Failed to update the department member" });
+    console.error(error.message);
+    res.status(500).json({message:error.message});
   }
 };
 
