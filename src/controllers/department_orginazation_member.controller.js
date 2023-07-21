@@ -1,4 +1,5 @@
 const Department_Organization_Member = require("../models/department_orginazation_member.model");
+const User = require('../models/user.model');
 const sequelize = require("../configs/db");
 const { QueryTypes, where } = require("sequelize");
 exports.create = async (req, res) => {
@@ -46,20 +47,7 @@ exports.department_Organization_Member = async (req, res) => {
       return res.status(404).json({message:'this table do not exist'})
     }
     return res.status(200).json(data);
-    // const sql = `
-    //  select dot.id,dotm.id as d_o_m_id,dotm.name,dotm.last_name ,
-    //  dotm.profile,dotm.phone,dotm.position,dotm.address,dotm.details
-    //  from department_organizations dot
-    //  inner join department_organization_members dotm 
-    //  on dot.id = dotm.department_organization_member_id 
-    //  where dot.id = '${id}'
-    // `;
-    // const data = await sequelize.query(sql, { type: QueryTypes.SELECT });
-    // if (data.length > 0) {
-    //   return res.status(200).json(data);
-    // } else {
-    //   return res.status(404).json({ message: "NOT FOUND DATA" });
-    // }
+    
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -120,3 +108,20 @@ exports.deleteData = async (req, res) => {
     res.status(500).json({ error: "Failed to delete the department member" });
   }
 };
+
+exports.getAllByUserIdToReport = async (req, res) => {
+  try {
+
+    const { id } = req.params;
+
+    const data = await Department_Organization_Member.findAndCountAll({ where: { user_id: id } });
+    if (!data) {
+      return res.status(404).json({ message:"this data not found"})
+    }
+
+    return res.status(200).json(data);
+    
+  } catch (error) {
+    return res.status(500).json({ message:error.message });
+  }
+}

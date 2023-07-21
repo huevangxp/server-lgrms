@@ -15,7 +15,7 @@ exports.create = async (req, res) => {
       address,
     } = req.body;
 
-    await DepartmentMember.create({
+   const data = await DepartmentMember.create({
       department_id,
       name,
       last_name,
@@ -25,13 +25,13 @@ exports.create = async (req, res) => {
       address,
       details,
       user_id: user,
-    })
-      .then((data) => {
-        return res.status(201).json(data);
-      })
-      .catch((error) => {
-        return res.status(404).json({ message: error.message });
-      });
+   })
+     return res.status(201).json(data);
+      // .then((data) => {
+      // })
+      // .catch((error) => {
+      //   return res.status(404).json({ message: error.message });
+      // });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Failed to create a new department member" });

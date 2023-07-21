@@ -32,7 +32,6 @@ exports.allVillage = async (req, res) => {
     try {
         
         let options = {
-            // province: pid,
             district: id,
             village:"all"
         }
