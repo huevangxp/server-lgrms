@@ -7,4 +7,5 @@ module.exports = (app) => {
     app.get('/select_all_department_id/:id', controller.selectById);
     app.delete('/department/:id', controller.delete);
     app.put('/department/:id', controller.update);
+    app.get('/department-report/:id', controller.getDepartmentReport);
 }

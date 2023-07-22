@@ -6,4 +6,5 @@ module.exports = (app) => {
     app.get('/sectorAllById/:id', controller.selectById);
     app.delete('/sector/:id', controller.delete);
     app.put('/sector/:id', controller.update);
+    app.get('/getSectorToReport/:id', controller.getSectorToReport);
 }

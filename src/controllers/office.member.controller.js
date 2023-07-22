@@ -1,10 +1,10 @@
-const SectorMember = require("../models/sector_member.model");
+const OfficeMember = require('../models/office.member.models');
 
 exports.create = async (req, res) => {
     const user = req.payload.id;
     try {
         const {
-            sector_id,
+            office_id,
             name,
             last_name,
             profile,
@@ -14,8 +14,8 @@ exports.create = async (req, res) => {
             address,
         } = req.body;
 
-        await SectorMember.create({
-            sector_id,
+        await OfficeMember.create({
+            office_id,
             name,
             last_name,
             profile,
@@ -37,23 +37,24 @@ exports.create = async (req, res) => {
     }
 };
 
-exports.getToReportAll = async (req, res) => {
+exports.allData = async (req, res) => {
     try {
-        const { id } = req.params;
-        const data = await SectorMember.findAndCountAll({ where: { user_id: id } });
-        if (!data) {
-            return res.status(404).json({ message: 'this table do not exist' })
-        }
-        return res.status(200).json(data);
 
+        const data = await OfficeMember.findAndCountAll();
+        if (!data) {
+            return res.status(404).send({message:"this database no item"})
+        }
+
+        return res.status(200).json(data)
+        
     } catch (error) {
-        return res.status(500).json({ message: error.message });
+        return res.status(500).json({message: error.message})
     }
-};
+}
 exports.getSectorAllById = async (req, res) => {
     try {
         const { id } = req.params;
-        const data = await SectorMember.findAndCountAll({ where: { sector_id: id } });
+        const data = await OfficeMember.findAndCountAll({ where: { office_id: id } });
         if (!data) {
             return res.status(404).json({ message: 'this table do not exist' })
         }
@@ -66,7 +67,7 @@ exports.getSectorAllById = async (req, res) => {
 exports.selectById = async (req, res) => {
     try {
         const { id } = req.params;
-        await SectorMember.findAll({ where: { id: id } })
+        await OfficeMember.findAll({ where: { id: id } })
             .then((data) => {
                 if (data.length > 0) {
                     return res.status(200).json(data);
@@ -85,7 +86,7 @@ exports.updateData = async (req, res) => {
     try {
         const { id } = req.params;
         const { name, last_name, profile, phone, position, address, details } = req.body;
-        const data = await SectorMember.findByPk(id);
+        const data = await OfficeMember.findByPk(id);
         if (!data) {
             return res.status(404).json({ message: 'Invalid department' })
         }
@@ -109,7 +110,7 @@ exports.updateData = async (req, res) => {
 exports.deleteData = async (req, res) => {
     try {
         const { id } = req.params;
-        const rowsDeleted = await SectorMember.destroy({ where: { id: id } });
+        const rowsDeleted = await OfficeMember.destroy({ where: { id: id } });
         if (!rowsDeleted) {
             return res.status(404).json({ error: "Department member not found" });
         }
@@ -120,12 +121,12 @@ exports.deleteData = async (req, res) => {
     }
 };
 
-exports.getAllByUserIdToReport = async (req, res) => {
+exports.getOfficeMemberReport = async (req, res) => {
     try {
 
         const { id } = req.params;
 
-        const data = await SectorMember.findAndCountAll({ where: { user_id: id } });
+        const data = await OfficeMember.findAndCountAll({ where: { user_id: id } });
         if (!data) {
             return res.status(404).json({ message: "this data not found" })
         }

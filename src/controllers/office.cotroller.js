@@ -63,15 +63,25 @@ exports.updateData = async (req, res) => {
   try {
     const { id } = req.params;
     const { title } = req.body;
-    await office.update({ title: title }, { where: { id: id } }).then(
-      (updated) => {
-        if (updated) {
-          return res.status(200).json({ message: "Updated" });
-        }
-        return res.status(404).json({ message: "NOT UPDATED" });
-      }
-    );
+    const data = await office.findByPk(id);
+    if (!data) {
+      return res.status(404).json({message: 'this data not cant update'})
+    }
+    await data.update({ title: title });
+    return res.status(200).json({message: 'updated successfully'})
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
 };
+exports.getOfficeToReport = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const data = await office.findAndCountAll({ where: { user_id: id } });
+    if (!data) {
+      return res.status(404).json({ message: 'Invalid'})
+    }
+    return res.status(200).json(data)
+  } catch (error) {
+    return res.status(500).json({ message:error.message})
+  }
+}

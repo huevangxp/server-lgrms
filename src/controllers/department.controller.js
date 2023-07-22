@@ -53,6 +53,27 @@ exports.selectById = async (req, res) => {
     res.status(500).json({message: error.message});
   }
 };
+exports.getDepartmentReport = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const sql = `
+      select dt.id as id, dto.id as department_organization_id, dto.department_organization_title, dt.department_title, dt.created_at from department_organizations as dto
+       inner join departments as dt on dto.id = dt.department_organization_id where dto.user_id = '${id}'
+    `
+
+    const department = await sequelize.query(sql, { type: QueryTypes.SELECT });
+
+    if (!department) {
+      return res.status(404).json({ error: "Department not found" });
+    }
+
+   return res.status(200).json(department);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({message: error.message});
+  }
+};
 
 exports.update = async (req, res) => {
   try {

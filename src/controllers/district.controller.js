@@ -47,6 +47,18 @@ exports.get_all_by_id = async (req, res) => {
   }
 };
 // delete
+exports.getAllToReports = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const data = await District.findAndCountAll({ where: { province_departments_id: id } });
+    if (!data) {
+      return res.status(404).json({ message:'this data was not found'})
+    }
+    return res.status(200).json(data)
+  } catch (error) {
+    return res.status(500).json({ message: error.message})
+  }
+}
 exports.deleteData = async (req, res) => {
   try {
     const { id } = req.params;
@@ -72,14 +84,12 @@ exports.updateData = async (req, res) => {
   try {
     const { id } = req.params;
     const { title } = req.body;
-    await District.update({ title: title }, { where: { id: id } }).then(
-      (updated) => {
-        if (updated) {
-          return res.status(200).json({ message: "Updated" });
-        }
-        return res.status(404).json({ message: "NOT UPDATED" });
-      }
-    );
+    const data = await District.findByPk(id);
+    if (!data) {
+      return res.status(404).json({ message:"this data can not exist"})
+    }
+    await data.update({ title: title })
+    return res.status(200).json({ message: "data updated successfully"})
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }

@@ -27,11 +27,6 @@ exports.create = async (req, res) => {
       user_id: user,
    })
      return res.status(201).json(data);
-      // .then((data) => {
-      // })
-      // .catch((error) => {
-      //   return res.status(404).json({ message: error.message });
-      // });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Failed to create a new department member" });
@@ -42,7 +37,7 @@ exports.departmentMember_department = async (req, res) => {
   try {
     const { id } = req.params;
     const sql = `
-     select dt.id,dm.id as department_menber_id,dm.name,dm.last_name,dm.profile,dm.phone,dm.position,
+     select dt.id as department_id,dm.id as id,dm.name,dm.last_name,dm.profile,dm.phone,dm.position,
      dm.address,dm.details from departments dt 
      inner join department_members dm on dt.id = dm.department_id 
      where dt.id = '${id}'
@@ -73,17 +68,14 @@ exports.selectAll = async (req, res) => {
 exports.selectById = async (req, res) => {
   try {
     const { id } = req.params;
-    await DepartmentMember.findAll({ where: { id: id } })
-      .then((data) => {
-        if (data.length > 0) {
-          return res.status(200).json(data);
-        }
-      })
-      .catch((error) => {
-        return res.status(404).json({ message: error.message });
-      });
+    const data = await DepartmentMember.findByPk(id);
+    if (!data) {
+      return res.status(404).json({message: 'Invalid'})
+    }
+
+    return res.status(200).json(data)
+      
   } catch (error) {
-    console.error(error);
     res.status(500).json({ error: "Failed to retrieve the department member" });
   }
 };

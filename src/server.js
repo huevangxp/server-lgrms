@@ -12,7 +12,7 @@ const router = require('./routes/routes');
 const port = process.env.PORT || 3000;
 //use library
 app.use(cors());
-// app.use(helmet());
+app.use(helmet());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ limit: "10mb", extended: true, parameterLimit: 50000000 }));
 

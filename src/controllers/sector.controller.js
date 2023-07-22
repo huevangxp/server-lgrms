@@ -55,6 +55,22 @@ exports.selectById = async (req, res) => {
   }
 };
 
+exports.getSectorToReport = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const data = Sector.findAndCountAll({ where: { user_id: id } })
+    
+    if (!data) {
+      return res.status(404).json({ message: 'this data not found'})
+    }
+
+    return res.status(200).json(data)
+    
+  } catch (error) {
+    return res.status(500).json({ message:error.message})
+  }
+}
+
 exports.update = async (req, res) => {
   try {
     const { id } = req.params;

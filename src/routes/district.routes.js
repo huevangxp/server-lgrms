@@ -4,5 +4,6 @@ module.exports = async (app) => {
     app.post('/district',verifyToken, controller.create);
     app.get('/district/:id', controller.get_all_by_id);
     app.delete('/district/:id', controller.deleteData);
-    // app.get('/address/village/:id', controller.allVillage);
+    app.put('/district/:id', controller.updateData);
+    app.get('/getToReport/:id', controller.getAllToReports);
 }

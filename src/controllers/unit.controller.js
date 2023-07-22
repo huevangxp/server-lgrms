@@ -77,3 +77,19 @@ exports.updateData = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
+exports.getUnitToReport = async (req, res) => {
+  try {
+
+    const { id } = req.params;
+
+    const data = await Unit.findAndCountAll({ where: { user_id: id } });
+    if (!data) {
+      return res.status(404).json({ message: 'Unit not found'})
+    }
+    return res.status(200).json(data);
+    
+  } catch (error) {
+    return res.status(500).json({ message:error.message})
+  }
+}

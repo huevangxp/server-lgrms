@@ -68,6 +68,21 @@ exports.get_all_by_id = async (req, res) => {
   }
 };
 // delete
+exports.getToReport = async (req, res) => {
+  const { id } = req.params;
+  try {
+
+    const data = Rarul.findAndCountAll({ where: { user_id: id } });
+    if (!data) {
+      return res.status(404).json({message: 'this data not found'})
+    }
+
+    return res.status(200).json(data)
+    
+  } catch (error) {
+    return res.status(500).json({ message:error.message})
+  }
+}
 exports.deleteData = async (req, res) => {
   try {
     const { id } = req.params;
@@ -82,6 +97,15 @@ exports.deleteData = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+//get to report
+// exports.getToReport = async (req, res) => {
+//   const { id } = req.params;
+//   try {
+//     const data = await 
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//   }
+// }
 // update
 exports.updateData = async (req, res) => {
   try {
