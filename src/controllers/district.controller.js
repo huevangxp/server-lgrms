@@ -51,9 +51,18 @@ exports.getAllToReports = async (req, res) => {
   const { id } = req.params;
   try {
     const data = await District.findAndCountAll({ where: { province_departments_id: id } });
+    // const sql = `
+    //      select pd.id as province_department_id,pd.title,
+    //      pd.created_at,dt.id as id,dt.title as district_title
+    //       from province_departments pd 
+    //      inner join districts dt on pd.user_id = dt.user_id
+    //      where pd.user_id = '${id}'
+    //     `;
+    // const data = await sequelize.query(sql, { type: QueryTypes.SELECT });
     if (!data) {
-      return res.status(404).json({ message:'this data was not found'})
+      return res.status(404).json({ message: "ບໍ່ມີຂໍ້ມູນ" });
     }
+
     return res.status(200).json(data)
   } catch (error) {
     return res.status(500).json({ message: error.message})

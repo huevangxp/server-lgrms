@@ -29,8 +29,23 @@ exports.create = async (req, res) => {
   }
 };
 exports.select = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const data = await Rarul.findAndCountAll({ where: { province_id: id } });
+    if (!data) {
+      return res.status(404).json({ message: 'Invalide'})
+    }
+    return res.status(200).json(data)
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+}
+exports.selectAll = async (req, res) => {
   try {
     const data = await Rarul.findAndCountAll({});
+    if (!data) {
+      return res.status(404).json({ message: 'Invalide'})
+    }
     return res.status(200).json(data)
   } catch (error) {
     return res.status(500).json({ message: error.message });

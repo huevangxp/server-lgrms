@@ -40,7 +40,6 @@ const Rarul = sequelize.define(
     status: {
       type: DataTypes.STRING,
       defaultValue:'0',
-      allowNull: false,
     },
     created_at: {
       type: DataTypes.DATE,

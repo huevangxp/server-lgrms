@@ -43,11 +43,10 @@ exports.departmentMember_department = async (req, res) => {
      where dt.id = '${id}'
     `;
     const data = await sequelize.query(sql, { type: QueryTypes.SELECT });
-    if (data.length > 0) {
-      return res.status(200).json(data);
-    } else {
-      return res.status(404).json({ message: "NOT FOUND DATA" });
+    if (!data) {
+    return res.status(404).json({message: 'Invalide'})
     }
+    return res.status(200).json(data);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -112,11 +111,11 @@ exports.update = async (req, res) => {
 exports.delete = async (req, res) => {
   try {
     const { id } = req.params;
-    const rowsDeleted = await DepartmentMember.destroy({ where: { id: id } });
-
+    const rowsDeleted = await DepartmentMember.findByPk(id);
     if (!rowsDeleted) {
       return res.status(404).json({ error: "Department member not found" });
     }
+    await rowsDeleted.destroy();
     res.json({ message: "Department member deleted successfully" });
   } catch (error) {
     console.error(error);

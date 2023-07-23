@@ -27,6 +27,10 @@ const Ministry = sequelize.define('ministry', {
         type: DataTypes.STRING,
         allowNull:false
     },
+    // status: {
+    //     type: DataTypes.STRING,
+    //     defaultValue:'0',
+    // },
     role:{
         type:DataTypes.STRING,
         allowNull:false,
