@@ -37,6 +37,21 @@ exports.create = async (req, res) => {
     }
 };
 
+exports.selectAllData = async (req, res) => {
+    try {
+
+        const data = await SectorMember.findAndCountAll({});
+        if (!data) {
+            return res.status(404).json({message:"Invalid SectorMember"})
+        }
+
+        return res.status(200).json(data)
+        
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+}
+
 exports.getToReportAll = async (req, res) => {
     try {
         const { id } = req.params;

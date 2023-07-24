@@ -9,7 +9,7 @@ exports.create = async (req, res) => {
     const { user_name, password, role, pid, title, province_id } = req.body;
     const data = await Rarul.findOne({ where: { title } })
     if (data) {
-      return res.status(404).json({ message: 'this data exist'})
+      return res.status(404).json({ message: 'this data exist' })
     }
     const hashPassword = await bcrypt.hash(password, 10)
     await Rarul.create({
@@ -21,9 +21,9 @@ exports.create = async (req, res) => {
       role,
       user_id: user,
     })
-      
-    return res.status(201).json({ message:'created'})
-  
+
+    return res.status(201).json({ message: 'created' })
+
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -33,7 +33,7 @@ exports.select = async (req, res) => {
   try {
     const data = await Rarul.findAndCountAll({ where: { province_id: id } });
     if (!data) {
-      return res.status(404).json({ message: 'Invalide'})
+      return res.status(404).json({ message: 'Invalide' })
     }
     return res.status(200).json(data)
   } catch (error) {
@@ -44,7 +44,7 @@ exports.selectAll = async (req, res) => {
   try {
     const data = await Rarul.findAndCountAll({});
     if (!data) {
-      return res.status(404).json({ message: 'Invalide'})
+      return res.status(404).json({ message: 'Invalide' })
     }
     return res.status(200).json(data)
   } catch (error) {
@@ -52,11 +52,11 @@ exports.selectAll = async (req, res) => {
   }
 }
 exports.selectOne = async (req, res) => {
-  const {id} = req.params;
+  const { id } = req.params;
   try {
     const data = await Rarul.findByPk(id);
     if (!data) {
-      return res.status(404).json({ message:'this data not found'})
+      return res.status(404).json({ message: 'this data not found' })
     }
     return res.status(200).json(data)
   } catch (error) {
@@ -89,25 +89,24 @@ exports.getToReport = async (req, res) => {
 
     const data = Rarul.findAndCountAll({ where: { user_id: id } });
     if (!data) {
-      return res.status(404).json({message: 'this data not found'})
+      return res.status(404).json({ message: 'this data not found' })
     }
 
     return res.status(200).json(data)
-    
+
   } catch (error) {
-    return res.status(500).json({ message:error.message})
+    return res.status(500).json({ message: error.message })
   }
 }
 exports.deleteData = async (req, res) => {
   try {
     const { id } = req.params;
-    await Rarul.destroy({ where: { id: id } }).then((deleted) => {
-      if (deleted) {
-        return res.status(200).json({ message: "Deleted" });
-      } else {
-        return res.status(404).json({ message: "CAN'T NOT DELETED" });
-      }
-    });
+    const data = await Rarul.findByPk(id);
+    if (!data) {
+      return res.status(404).json({ message: 'Invalide' })
+    }
+    await data.destroy();
+    return res.status(200).json({ message: 'delete success' })
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -125,15 +124,20 @@ exports.deleteData = async (req, res) => {
 exports.updateData = async (req, res) => {
   try {
     const { id } = req.params;
-    const { title } = req.body;
-    await Rarul.update({ title: title }, { where: { id: id } }).then(
-      (updated) => {
-        if (updated) {
-          return res.status(200).json({ message: "Updated" });
-        }
-        return res.status(404).json({ message: "NOT UPDATED" });
-      }
-    );
+    const { title, user_name, password, role } = req.body;
+    const data = await Rarul.findByPk(id);
+    if (!data) {
+      return res.status(404).json({ message: 'Invalide' })
+    }
+    const newPass = await bcrypt.hash(password, 10);
+    const rural = {
+      title,
+      user_name,
+      password: newPass,
+      role
+    }
+    await data.update(rural);
+    return res.status(200).json({ message: "update success" })
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }

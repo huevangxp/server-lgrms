@@ -6,4 +6,6 @@ module.exports = async (app) => {
     app.get('/rarul_department/:id', controller.select);
     app.get('/rarul_department', controller.selectAll)
     app.get('/rarul_departmentOne/:id', controller.selectOne);
+    app.put('/update-rural/:id', controller.updateData);
+    app.delete('/delete-rural/:id', controller.deleteData);
 }

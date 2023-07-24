@@ -50,6 +50,17 @@ exports.getSectorAllById = async (req, res) => {
         return res.status(500).json({ message: error.message });
     }
 };
+exports.getAllData = async (req, res) => {
+    try {
+        const data = await UnitMember.findAndCountAll({});
+        if (!data) {
+            return res.status(404).json({ message: 'No data found'})
+        }
+        return res.status(200).json(data);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+}
 exports.selectById = async (req, res) => {
     try {
         const { id } = req.params;

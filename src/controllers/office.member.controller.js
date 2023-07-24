@@ -40,7 +40,7 @@ exports.create = async (req, res) => {
 exports.allData = async (req, res) => {
     try {
 
-        const data = await OfficeMember.findAndCountAll();
+        const data = await OfficeMember.findAndCountAll({});
         if (!data) {
             return res.status(404).send({message:"this database no item"})
         }

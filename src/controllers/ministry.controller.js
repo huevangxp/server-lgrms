@@ -126,16 +126,22 @@ exports.selectById = async (req, res) => {
 exports.update = async (req, res) => {
   try {
     const { id } = req.params;
+    const {ministry_title, profile, user_name, password, role} = req.body;
     const ministry = await Ministry.findByPk(id);
     if (!ministry) {
       return res.status(404).json({ message: "this id not found" });
     }
-    let user = req.body;
-    delete user.user_id;
-    await ministry.update({
-      ministry_title: req.body.ministry_title,
-      profile: req.body.profile,
-    });
+
+    const newPass = await bcryt.hash(password, 10);
+
+    const data = {
+      ministry_title,
+      profile,
+      user_name,
+      password: newPass,
+      role
+    }
+    await ministry.update(data);
     res.status(200).json({ message: "update ministry successfully" });
   } catch (error) {
     return res.status(500).json({ message: error.message });

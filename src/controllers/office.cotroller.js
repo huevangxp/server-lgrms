@@ -25,6 +25,18 @@ exports.create = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+// select data
+exports.selectAllData = async (req, res) => {
+  try {
+    const data = await office.findAndCountAll({});
+    if (!data) {
+      return res.status(404).json({ message:'Invalide'})
+    }
+    return res.status(200).json(data)
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+}
 // get all
 exports.get_all_by_id = async (req, res) => {
   try {

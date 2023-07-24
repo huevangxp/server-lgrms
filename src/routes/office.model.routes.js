@@ -3,6 +3,7 @@ const verifyToken = require('../middleware/token')
 module.exports = async (app) => {
     app.post('/office',verifyToken, controller.create);
     app.get('/office/:id', controller.get_all_by_id);
+    app.get('/select-all-office', controller.selectAllData)
     app.delete('/office/:id', controller.deleteData);
     app.put('/office/:id', controller.updateData);
     app.get('/get-office-report/:id', controller.getOfficeToReport);

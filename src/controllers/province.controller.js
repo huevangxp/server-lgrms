@@ -74,11 +74,11 @@ exports.update = async (req, res) => {
     if (!province) {
       return res.status(404).json({ message: "this id not found" });
     }
-    let { province_title, profile, user_id } = req.body;
-    delete user_id;
+    let { province_title, pid, profile, } = req.body;
     await province.update({
       profile,
       province_title,
+      pid,
     });
     res.status(200).json({ message: "update province success" });
   } catch (error) {
