@@ -5,5 +5,5 @@ module.exports = (app) => {
     app.get('/get-all-member', controller.getAllMembers);
     app.get('/get-one-member/:id', controller.getMemberById);
     app.delete('/delete-member-prepare/:id', controller.deleteMember);
-    app.put('/update-member/:id', controller.createMember);
+    app.put('/update-member/:id', controller.updateMember);
 }
