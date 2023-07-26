@@ -1,5 +1,6 @@
 const Department_Organization_Member = require("../models/department_orginazation_member.model");
 const User = require('../models/user.model');
+const moment = require('moment');
 const sequelize = require("../configs/db");
 const { QueryTypes, where } = require("sequelize");
 exports.create = async (req, res) => {
@@ -71,7 +72,19 @@ exports.selectById = async (req, res) => {
 };
 exports.selectAll = async (req, res) => {
   try {
-    const data = await Department_Organization_Member.findAndCountAll({});
+    const startDate = req.query.start;
+    const end = req.query.end;
+
+    let formattedStartDate = moment(startDate).format("YYYY-MM-DD")
+
+    // const data = {
+    //   startDate: req.query.start,
+    //   endDate: req.query.end
+    // }
+
+    // return res.send(data);
+
+    const data = await Department_Organization_Member.findAll({where:{createdAt: formattedStartDate}});
     if (!data) {
       return res.status(404).json({message: "Couldn't find the department member"})
     }

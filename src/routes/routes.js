@@ -4,7 +4,8 @@ const router = express.Router();
 // import file
 const departmentOrganizationMemberRoute = require('./department_orginazation_member.routes');
 const departmentOrganizationRoute = require('./department.organization.routes');
-const departmentForeignRoute = require('./department.foreign.routes');
+// const departmentForeignRoute = require('./department.foreign.routes');
+const departmentPrepareRoute = require('./department.prepare.routes'); 
 const departmentMenberRoute = require('./department.menber.routes');
 const rarul_departments = require('./province_department.routes');
 const officeMemberRoutes = require('./office.member.routes');
@@ -19,13 +20,16 @@ const sectorRoute = require('./sector.routes');
 const district = require('./district.routes');
 const userRoute = require('./user.routes');
 const unit = require('./unit.routes');
+const memberRoute = require('./member.routes');
 
 //use file
 departmentOrganizationMemberRoute(router);
 departmentOrganizationRoute(router);
-departmentForeignRoute(router);
+// departmentForeignRoute(router);
+departmentPrepareRoute(router);
 departmentMenberRoute(router);
 sectorMemberRoute(router);
+memberRoute(router);
 rarul_departments(router);
 unitMemberRoute(router);
 officeMemberRoutes(router);
