@@ -2,7 +2,7 @@ const controller = require('../controllers/office.member.controller');
 const verifyToken = require('../middleware/token');
 
 module.exports = (app) => {
-    app.post('/create-office-member', verifyToken, controller.create);
+    app.post('/create-office-member/:id', verifyToken, controller.create);
     app.get('/get-office-all-byId/:id', controller.getSectorAllById);
     app.get('/getAll', controller.allData);
     app.get('/get-office-one/:id', controller.selectById);

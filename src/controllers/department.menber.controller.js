@@ -1,8 +1,10 @@
 const DepartmentMember = require("../models/department.menber.model");
 const sequelize = require("../configs/db");
 const { QueryTypes, where } = require("sequelize");
+const Member = require("../models/member.model");
 exports.create = async (req, res) => {
   const user = req.payload.id;
+  const { id } = req.params;
   try {
     const {
       department_id,
@@ -26,6 +28,7 @@ exports.create = async (req, res) => {
       details,
       user_id: user,
    })
+    await  Member.update({status:'1'},{ where: { id: id }}) 
      return res.status(201).json(data);
   } catch (error) {
     console.error(error);

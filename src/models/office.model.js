@@ -9,7 +9,7 @@ const Office = sequelize.define(
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
     },
-    district_id: {
+    province_department_id: {
       type: DataTypes.UUID,
       allowNull: false,
     },
@@ -18,6 +18,10 @@ const Office = sequelize.define(
       allowNull: false,
     },
     title: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    office_title: {
       type: DataTypes.STRING,
       allowNull: false,
     },

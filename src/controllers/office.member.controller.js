@@ -1,7 +1,9 @@
+const Member = require('../models/member.model');
 const OfficeMember = require('../models/office.member.models');
 
 exports.create = async (req, res) => {
     const user = req.payload.id;
+    const { id } = req.params;
     try {
         const {
             office_id,
@@ -26,6 +28,7 @@ exports.create = async (req, res) => {
             user_id: user,
         })
             .then((data) => {
+                Member.update({status:'1'},{ where: { id: id }}) 
                 return res.status(201).json(data);
             })
             .catch((error) => {

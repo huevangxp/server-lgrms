@@ -13,6 +13,10 @@ const Rarul = sequelize.define(
       type: DataTypes.UUID,
       allowNull: false,
     },
+    province_title: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     user_id: {
       type: DataTypes.UUID,
       allowNull: false,
@@ -36,6 +40,10 @@ const Rarul = sequelize.define(
     title: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    profile: {
+      type: DataTypes.STRING,
+      allowNull:false
     },
     status: {
       type: DataTypes.STRING,

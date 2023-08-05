@@ -3,8 +3,10 @@ const User = require('../models/user.model');
 const moment = require('moment');
 const sequelize = require("../configs/db");
 const { QueryTypes, where } = require("sequelize");
+const Member = require("../models/member.model");
 exports.create = async (req, res) => {
   const user = req.payload.id;
+  const { id } = req.params;
   try {
     const {
       department_organization_id,
@@ -29,6 +31,7 @@ exports.create = async (req, res) => {
       user_id: user,
     })
       .then((data) => {
+        Member.update({status:'1'},{ where: { id: id }}) 
         return res.status(201).json(data);
       })
       .catch((error) => {
@@ -76,13 +79,6 @@ exports.selectAll = async (req, res) => {
     const end = req.query.end;
 
     let formattedStartDate = moment(startDate).format("YYYY-MM-DD")
-
-    // const data = {
-    //   startDate: req.query.start,
-    //   endDate: req.query.end
-    // }
-
-    // return res.send(data);
 
     const data = await Department_Organization_Member.findAll({where:{createdAt: formattedStartDate}});
     if (!data) {

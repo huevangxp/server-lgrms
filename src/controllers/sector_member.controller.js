@@ -1,6 +1,8 @@
+const Member = require("../models/member.model");
 const SectorMember = require("../models/sector_member.model");
 
 exports.create = async (req, res) => {
+    const { id } = req.params;
     const user = req.payload.id;
     try {
         const {
@@ -26,6 +28,7 @@ exports.create = async (req, res) => {
             user_id: user,
         })
             .then((data) => {
+                Member.update({status:'1'},{ where: { id: id }}) 
                 return res.status(201).json(data);
             })
             .catch((error) => {

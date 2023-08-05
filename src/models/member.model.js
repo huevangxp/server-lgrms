@@ -21,6 +21,14 @@ const Member = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    db_status: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    status: {
+      type: DataTypes.STRING,
+      defaultValue:0
+    },
     phone: {
       type: DataTypes.STRING,
       allowNull: false,

@@ -20,7 +20,7 @@ exports.create = async (req, res) => {
       }
     });
   } catch (error) {
-    res.status(500).json({ error: 'Failed to create sector' });
+   return  res.status(500).json({ message: error.message});
   }
 }
 

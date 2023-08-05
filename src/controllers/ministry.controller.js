@@ -46,7 +46,7 @@ exports.signIn = async (req, res) => {
         data_ministry.password
       );
       if (!checkPassword) {
-        return res.status(404).json({ message: "password invialid" });
+        return res.status(200).json({ message: "password invialid" });
       }
       const m_data = {
         id: data_ministry.id,
@@ -62,21 +62,24 @@ exports.signIn = async (req, res) => {
     } else {
      const checkPassword = await bcryt.compare(password,data_province.password)
      if(!checkPassword) {
-      return res.status(400).json({message:"not found user"})
-     } else {
+      return res.status(200).json({message:"not found user"})
+     }
+    //  else {
       const p_data= {
         id:data_province.id,
         name: data_province.user_name,
-        pid:data_province.pid,
+        profile: data_province.profile,
+        pid: data_province.pid,
+        province_title: data_province.province_title,
         title:data_province.title,
         role: data_province.role,
       }
       const token = jwt.sign(p_data,process.env.SECRET_KEY,{expiresIn:"120d"})
       res.status(200).json({token:token})
      }
-    }
+    // }
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    return res.status(200).json({ message: 'this_user_not_found' });
   }
 };
 

@@ -23,7 +23,8 @@ exports.createMember = async (req, res) => {
 // Read all members
 exports.getAllMembers = async (req, res) => {
     try {
-        const members = await Member.findAll();
+        const status = req.query.status;
+        const members = await Member.findAll({where: {status}});
         return res.json(members);
     } catch (error) {
         return res.status(500).json({ error: 'Failed to fetch members' });

@@ -5,7 +5,7 @@ exports.create = async (req, res) => {
   try {
     const {profile, province_title, pid } = req.body;
     const data = await Province.findOne({ where: { province_title : province_title} });
-    console.log(data);
+    // console.log(data);
     if (data) {
       return res.status(404).json({ message:' this province exist'})
     }

@@ -5,10 +5,11 @@ const { QueryTypes } = require("sequelize");
 exports.create = async (req, res) => {
   try {
     const user = req.payload.id;
-    const { district_id, title } = req.body;
+    const { province_department_id, title, office_title } = req.body;
     const prepare = {
-        district_id: district_id,
+        province_department_id: province_department_id,
       title: title,
+      office_title,
       user_id: user,
     };
     await office
@@ -41,12 +42,13 @@ exports.selectAllData = async (req, res) => {
 exports.get_all_by_id = async (req, res) => {
   try {
     const { id } = req.params;
-    const sql = `
-         select dt.id as district_id,of.title as office_title,of.id as id , dt.title as district_title from districts dt
-         inner join offices of on dt.id = of.district_id
-         where dt.id = '${id}'
-        `;
-    const data = await sequelize.query(sql, { type: QueryTypes.SELECT });
+    // const sql = `
+    //      select dt.id as district_id,of.title as office_title,of.id as id , dt.title as district_title from districts dt
+    //      inner join offices of on dt.id = of.district_id
+    //      where dt.id = '${id}'
+    //     `;
+    // const data = await sequelize.query(sql, { type: QueryTypes.SELECT });
+    const data = await office.findAll({where:{province_department_id : id}})
     if (!data) {
       return res.status(404).json({ message: "ບໍ່ມີຂໍ້ມູນ" });
     }
@@ -74,12 +76,12 @@ exports.deleteData = async (req, res) => {
 exports.updateData = async (req, res) => {
   try {
     const { id } = req.params;
-    const { title } = req.body;
+    const { title,office_title } = req.body;
     const data = await office.findByPk(id);
     if (!data) {
       return res.status(404).json({message: 'this data not cant update'})
     }
-    await data.update({ title: title });
+    await data.update({ title: title, office_title:office_title });
     return res.status(200).json({message: 'updated successfully'})
   } catch (error) {
     return res.status(500).json({ message: error.message });

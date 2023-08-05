@@ -5,12 +5,13 @@ const { QueryTypes } = require("sequelize");
 exports.create = async (req, res) => {
   try {
     const user = req.payload.id;
-    console.log(req.body);
-    const { province_departments_id, title } = req.body;
+    // console.log(req.body);
+    const { province_departments_id, title, office_title } = req.body;
     const prepare = {
       province_departments_id: province_departments_id,
       title: title,
       user_id: user,
+      office_title
     };
     await District
       .create(prepare)
@@ -43,7 +44,7 @@ exports.get_all_by_id = async (req, res) => {
     const { id } = req.params;
     const sql = `
          select pd.id as province_department_id,pd.title,
-         pd.created_at,dt.id as id,dt.title as district_title
+         pd.created_at,dt.id as id,dt.title as district_title, dt.office_title as office_title
           from province_departments pd 
          inner join districts dt on pd.id = dt.province_departments_id
          where pd.id = '${id}'
@@ -103,12 +104,12 @@ exports.deleteData = async (req, res) => {
 exports.updateData = async (req, res) => {
   try {
     const { id } = req.params;
-    const { title } = req.body;
+    const { title , office_title} = req.body;
     const data = await District.findByPk(id);
     if (!data) {
       return res.status(404).json({ message:"this data can not exist"})
     }
-    await data.update({ title: title })
+    await data.update({ title: title, office_title:office_title })
     return res.status(200).json({ message: "data updated successfully"})
   } catch (error) {
     return res.status(500).json({ message: error.message });

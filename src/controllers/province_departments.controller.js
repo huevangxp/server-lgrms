@@ -6,7 +6,7 @@ const { QueryTypes } = require("sequelize");
 exports.create = async (req, res) => {
   try {
     const user = req.payload.id;
-    const { user_name, password, role, pid, title, province_id } = req.body;
+    const { user_name, password, role, pid, title,profile,province_title, province_id } = req.body;
     const data = await Rarul.findOne({ where: { title } })
     if (data) {
       return res.status(404).json({ message: 'this data exist' })
@@ -16,7 +16,9 @@ exports.create = async (req, res) => {
       title,
       user_name,
       pid,
+      profile,
       password: hashPassword,
+      province_title,
       province_id,
       role,
       user_id: user,

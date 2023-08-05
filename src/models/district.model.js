@@ -21,6 +21,10 @@ const District = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    office_title: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     created_at: {
       type: DataTypes.DATE,
       defaultValue: sequelize.literal("NOW()"),
