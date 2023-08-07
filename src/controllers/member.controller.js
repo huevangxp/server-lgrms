@@ -1,8 +1,11 @@
+const { Op } = require('sequelize');
 const Member = require('../models/member.model');
 
 exports.createMember = async (req, res) => {
     try {
-        const { name, last_name, email, phone, address, profile, position, details } = req.body;
+        // console.log(req.body);
+        const id = req.payload.id;
+        const { name, last_name, email, phone, address, profile, position, details, db_status } = req.body;
         const data = {
             name,
             last_name,
@@ -11,12 +14,15 @@ exports.createMember = async (req, res) => {
             address,
             profile,
             position,
-            details
+            db_status,
+            details,
+            user_id: id
+
         }
         const newMember = await Member.create(data);
         return res.status(201).json(newMember);
     } catch (error) {
-        return res.status(500).json({ error: 'Failed to create member' });
+        return res.status(500).json({ message: error.message });
     }
 };
 
@@ -24,10 +30,22 @@ exports.createMember = async (req, res) => {
 exports.getAllMembers = async (req, res) => {
     try {
         const status = req.query.status;
-        const members = await Member.findAll({where: {status}});
+        const id = req.query.userId;
+        console.log(id);
+        const members = await Member.findAll({
+            where: {
+              [Op.and]: [
+                { status },
+                { user_id: id }
+              ]
+            }
+        });
+        if (!members) {
+            return res.status(404).json({message: "this item not found"})
+        }
         return res.json(members);
     } catch (error) {
-        return res.status(500).json({ error: 'Failed to fetch members' });
+        return res.status(500).json({ message: error.message });
     }
 };
 

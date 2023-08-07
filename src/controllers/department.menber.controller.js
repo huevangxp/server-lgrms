@@ -39,6 +39,7 @@ exports.create = async (req, res) => {
 exports.departmentMember_department = async (req, res) => {
   try {
     const { id } = req.params;
+    // const data = await DepartmentMember.findAll({where: {department_id : id}})
     const sql = `
      select dt.id as department_id,dm.id as id,dm.name,dm.last_name,dm.profile,dm.phone,dm.position,
      dm.address,dm.details from departments dt 
