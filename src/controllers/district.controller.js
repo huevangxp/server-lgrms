@@ -5,13 +5,12 @@ const { QueryTypes } = require("sequelize");
 exports.create = async (req, res) => {
   try {
     const user = req.payload.id;
-    // console.log(req.body);
-    const { province_departments_id, title, office_title } = req.body;
+    const { province_id, title , pid} = req.body;
     const prepare = {
-      province_departments_id: province_departments_id,
+      province_id: province_id,
+      pid,
       title: title,
-      user_id: user,
-      office_title
+      user_id: user
     };
     await District
       .create(prepare)
@@ -42,14 +41,15 @@ exports.selectAllData = async (req, res) => {
 exports.get_all_by_id = async (req, res) => {
   try {
     const { id } = req.params;
-    const sql = `
-         select pd.id as province_department_id,pd.title,
-         pd.created_at,dt.id as id,dt.title as district_title, dt.office_title as office_title
-          from province_departments pd 
-         inner join districts dt on pd.id = dt.province_departments_id
-         where pd.id = '${id}'
-        `;
-    const data = await sequelize.query(sql, { type: QueryTypes.SELECT });
+    // const sql = `
+    //      select pd.id as province_department_id,pd.title,
+    //      pd.created_at,dt.id as id,dt.title as district_title
+    //       from province_departments pd 
+    //      inner join districts dt on pd.id = dt.province_id
+    //      where pd.id = '${id}'
+    //     `;
+    // const data = await sequelize.query(sql, { type: QueryTypes.SELECT });
+    const data = await District.findAll({where: {province_id: id}})
     if (!data) {
       return res.status(404).json({ message: "ບໍ່ມີຂໍ້ມູນ" });
     }
@@ -62,7 +62,7 @@ exports.get_all_by_id = async (req, res) => {
 exports.getAllToReports = async (req, res) => {
   const { id } = req.params;
   try {
-    const data = await District.findAndCountAll({ where: { province_departments_id: id } });
+    const data = await District.findAll({ where: { pid: id } });
     // const sql = `
     //      select pd.id as province_department_id,pd.title,
     //      pd.created_at,dt.id as id,dt.title as district_title
@@ -99,6 +99,19 @@ exports.deleteData = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
+exports.getPidCity = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const data = await District.findAll({ where: { pid: id } })
+    if (!data) {
+      return res.status(404).json({ message: 'Invalid'})
+    }
+    return res.status(200).json(data)
+  } catch (error) {
+    return res.status(404).json({ message: error.message });
+  }
+}
 
 // update
 exports.updateData = async (req, res) => {

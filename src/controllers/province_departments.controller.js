@@ -7,10 +7,10 @@ exports.create = async (req, res) => {
   try {
     const user = req.payload.id;
     const { user_name, password, role, pid, title,profile,province_title, province_id } = req.body;
-    const data = await Rarul.findOne({ where: { title } })
-    if (data) {
-      return res.status(404).json({ message: 'this data exist' })
-    }
+    // const data = await Rarul.findOne({ where: { title } })
+    // if (data) {
+    //   return res.status(404).json({ message: 'this data exist' })
+    // }
     const hashPassword = await bcrypt.hash(password, 10)
     await Rarul.create({
       title,

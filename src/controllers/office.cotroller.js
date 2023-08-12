@@ -5,10 +5,11 @@ const { QueryTypes } = require("sequelize");
 exports.create = async (req, res) => {
   try {
     const user = req.payload.id;
-    const { province_department_id, title, office_title } = req.body;
+    const { province_department_id, title, office_title, city_id } = req.body;
     const prepare = {
         province_department_id: province_department_id,
       title: title,
+      city_id,
       office_title,
       user_id: user,
     };
@@ -90,7 +91,7 @@ exports.updateData = async (req, res) => {
 exports.getOfficeToReport = async (req, res) => {
   try {
     const { id } = req.params;
-    const data = await office.findAndCountAll({ where: { user_id: id } });
+    const data = await office.findAll({ where: { user_id: id } });
     if (!data) {
       return res.status(404).json({ message: 'Invalid'})
     }

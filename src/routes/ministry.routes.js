@@ -9,4 +9,5 @@ module.exports = (app) => {
     app.get('/ministryData', verify, controller.selectAllData);
     app.put('/update-ministry/:id', controller.update);
     app.delete('/ministry/:id', controller.delete);
+    // app.get('/report-rural', controller.report_all_data);
 }

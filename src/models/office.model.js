@@ -25,6 +25,10 @@ const Office = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    city_id: {
+      type: DataTypes.UUID,
+      allowNull: false,
+    },
     created_at: {
       type: DataTypes.DATE,
       defaultValue: sequelize.literal("NOW()"),

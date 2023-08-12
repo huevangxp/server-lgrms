@@ -1,9 +1,11 @@
 const Ministry = require("../models/ministry.models");
+// const dependencies = require('../')
 const Department = require('../models/province_department.model')
 const sequelize = require("../configs/db");
 const { QueryTypes } = require("sequelize");
 const bcryt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+
 exports.create = async (req, res) => {
   const user = req.payload.id;
   try {
@@ -173,3 +175,16 @@ exports.selectAllData = async (req, res) => {
     return res.status(500).json({ message:error.message})
   }
 }
+
+// exports.report_all_data = async (req, res) => {
+//   try {
+//     const province = await Ministry.findAll();
+//     const dpo = await province.map((data) => {
+//       // return data.id
+//       return DepartmentOrganization.findAll({where:{ministry_id: data.id}})
+//     })
+//     return res.status(200).json(dpo)
+//   } catch (error) {
+//     return res.status(500).json({ message:error.message})
+//   }
+// }
