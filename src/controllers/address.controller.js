@@ -41,3 +41,28 @@ exports.allVillage = async (req, res) => {
         return res.status(500).json({ message: message.error });
     }
 }
+
+exports.village = async (req, res) => {
+    try {
+        let options = {
+            village: "all"
+        };
+        
+        // Assuming `laoAddress` is an asynchronous function that returns an array of village data
+        const villageData = await laoAddress(options);
+
+        // Transform the villageData array into the desired format
+        const village = villageData.map((res, index) => {
+            return {
+                ລຳດັບ: index + 1,
+                ຊື່ລາວ: res.vn,
+                ຊື່ອັງກິດ: res.vn_en,
+            };
+        });
+
+        res.status(200).json(village);
+    } catch (error) {
+        // Handle errors properly, and use the correct property for the error message
+        return res.status(500).json({ message: error.message });
+    }
+};

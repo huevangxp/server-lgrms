@@ -21,14 +21,6 @@ const Province = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    // user_name: {
-    //   type: DataTypes.STRING,
-    //   allowNull: false,
-    // },
-    // password: {
-    //   type: DataTypes.STRING,
-    //   allowNull: false,
-    // },
     profile: {
       type: DataTypes.STRING,
       allowNull: false,

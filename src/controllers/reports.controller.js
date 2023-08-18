@@ -4,6 +4,8 @@ const Department = require('../models/department.model');
 const { QueryTypes } = require("sequelize");
 const sequelize = require("../configs/db");
 
+
+
 exports.report_rural = async (req, res) => {
     try {
         const ministries = await Ministry.findAll(); // Fetch all ministries
