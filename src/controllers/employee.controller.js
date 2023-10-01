@@ -3,7 +3,7 @@ const Employee = require("../models/employee.model");
 const User = require('../models/user.model');
 const moment = require('moment');
 const sequelize = require("../configs/db");
-const { QueryTypes, Op } = require("sequelize");
+const { Op } = require("sequelize");
 const Member = require("../models/member.model");
 
 exports.create = async (req, res) => {
