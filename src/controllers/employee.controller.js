@@ -37,7 +37,7 @@ exports.create = async (req, res) => {
             user_id: user,
         })
             .then((data) => {
-                // Member.update({ status: '1' }, { where: { id: id } })
+                Member.update({ status: '1' }, { where: { id: id } })
                 return res.status(201).json(data);
             })
             .catch((error) => {
